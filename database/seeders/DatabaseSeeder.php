@@ -5,16 +5,16 @@ namespace Database\Seeders;
 use App\Filament\Resources\Shop\Orders\OrderResource;
 use App\Models\Address;
 use App\Models\Blog\Author;
-use App\Models\Blog\Category as BlogCategory;
 use App\Models\Blog\Post;
+use App\Models\Blog\PostCategory as BlogCategory;
 use App\Models\Comment;
 use App\Models\Shop\Brand;
-use App\Models\Shop\Category as ShopCategory;
 use App\Models\Shop\Customer;
 use App\Models\Shop\Order;
 use App\Models\Shop\OrderItem;
 use App\Models\Shop\Payment;
 use App\Models\Shop\Product;
+use App\Models\Shop\ProductCategory as ShopCategory;
 use App\Models\User;
 use Closure;
 use Filament\Actions\Action;
@@ -69,7 +69,7 @@ class DatabaseSeeder extends Seeder
 
         $this->command->warn(PHP_EOL . 'Creating shop products...');
         $products = $this->withProgressBar(50, fn () => Product::factory(1)
-            ->sequence(fn ($sequence) => ['shop_brand_id' => $brands->random(1)->first()->id])
+            ->sequence(fn ($sequence) => ['brand_id' => $brands->random(1)->first()->id])
             ->hasAttached($categories->random(rand(3, 6)), ['created_at' => now(), 'updated_at' => now()])
             ->has(
                 Comment::factory()->count(rand(10, 20))
@@ -80,12 +80,12 @@ class DatabaseSeeder extends Seeder
 
         $this->command->warn(PHP_EOL . 'Creating orders...');
         $orders = $this->withProgressBar(1000, fn () => Order::factory(1)
-            ->sequence(fn ($sequence) => ['shop_customer_id' => $customers->random(1)->first()->id])
+            ->sequence(fn ($sequence) => ['customer_id' => $customers->random(1)->first()->id])
             ->has(Payment::factory()->count(rand(1, 3)))
             ->has(
                 OrderItem::factory()->count(rand(2, 5))
-                    ->state(fn (array $attributes, Order $order) => ['shop_product_id' => $products->random(1)->first()->id]),
-                'items'
+                    ->state(fn (array $attributes, Order $order) => ['product_id' => $products->random(1)->first()->id]),
+                'orderItems'
             )
             ->create());
 
@@ -93,7 +93,7 @@ class DatabaseSeeder extends Seeder
             Notification::make()
                 ->title('New order')
                 ->icon('heroicon-o-shopping-bag')
-                ->body("{$order->customer->name} ordered {$order->items->count()} products.")
+                ->body("{$order->customer->name} ordered {$order->orderItems->count()} products.")
                 ->actions([
                     Action::make('View')
                         ->url(OrderResource::getUrl('edit', ['record' => $order])),
@@ -117,7 +117,7 @@ class DatabaseSeeder extends Seeder
                         Comment::factory()->count(rand(5, 10))
                             ->state(fn (array $attributes, Post $post) => ['customer_id' => $customers->random(1)->first()->id]),
                     )
-                    ->state(fn (array $attributes, Author $author) => ['blog_category_id' => $blogCategories->random(1)->first()->id]),
+                    ->state(fn (array $attributes, Author $author) => ['post_category_id' => $blogCategories->random(1)->first()->id]),
                 'posts'
             )
             ->create());

@@ -14,5 +14,5 @@ class OrderItem extends Model
     /**
      * @var string
      */
-    protected $table = 'shop_order_items';
+    protected $table = 'order_items';
 }

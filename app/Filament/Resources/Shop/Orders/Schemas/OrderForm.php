@@ -3,7 +3,7 @@
 namespace App\Filament\Resources\Shop\Orders\Schemas;
 
 use App\Enums\OrderStatus;
-use App\Filament\Clusters\Products\Resources\Products\ProductResource;
+use App\Filament\Resources\Shop\Products\ProductResource;
 use App\Forms\Components\AddressForm;
 use App\Models\Shop\Order;
 use App\Models\Shop\Product;
@@ -79,7 +79,7 @@ class OrderForm
                 ->maxLength(32)
                 ->unique(Order::class, 'number', ignoreRecord: true),
 
-            Select::make('shop_customer_id')
+            Select::make('customer_id')
                 ->relationship('customer', 'name')
                 ->searchable()
                 ->required()
@@ -127,7 +127,7 @@ class OrderForm
     public static function getItemsRepeater(): Repeater
     {
         return Repeater::make('items')
-            ->relationship()
+            ->relationship('orderItems')
             ->table([
                 TableColumn::make('Product'),
                 TableColumn::make('Quantity')
@@ -136,7 +136,7 @@ class OrderForm
                     ->width(110),
             ])
             ->schema([
-                Select::make('shop_product_id')
+                Select::make('product_id')
                     ->label('Product')
                     ->options(Product::query()->pluck('name', 'id'))
                     ->required()
@@ -165,7 +165,7 @@ class OrderForm
                     ->url(function (array $arguments, Repeater $component): ?string {
                         $itemData = $component->getRawItemState($arguments['item']);
 
-                        $product = Product::find($itemData['shop_product_id']);
+                        $product = Product::find($itemData['product_id']);
 
                         if (! $product) {
                             return null;
@@ -173,7 +173,7 @@ class OrderForm
 
                         return ProductResource::getUrl('edit', ['record' => $product]);
                     }, shouldOpenInNewTab: true)
-                    ->hidden(fn (array $arguments, Repeater $component): bool => blank($component->getRawItemState($arguments['item'])['shop_product_id'])),
+                    ->hidden(fn (array $arguments, Repeater $component): bool => blank($component->getRawItemState($arguments['item'])['product_id'])),
             ])
             ->orderColumn('sort')
             ->defaultItems(1)

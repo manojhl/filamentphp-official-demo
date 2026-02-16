@@ -97,8 +97,8 @@ class PostResource extends Resource
             $details['Author'] = $record->author->name;
         }
 
-        if ($record->category) {
-            $details['Category'] = $record->category->name;
+        if ($record->postCategory) {
+            $details['Category'] = $record->postCategory->name;
         }
 
         return $details;

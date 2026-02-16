@@ -6,7 +6,7 @@ use App\Filament\Resources\Blog\Categories\Pages\ManageCategories;
 use App\Filament\Resources\Blog\Categories\Schemas\CategoryForm;
 use App\Filament\Resources\Blog\Categories\Schemas\CategoryInfolist;
 use App\Filament\Resources\Blog\Categories\Tables\CategoriesTable;
-use App\Models\Blog\Category;
+use App\Models\Blog\PostCategory;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
@@ -15,7 +15,7 @@ use UnitEnum;
 
 class CategoryResource extends Resource
 {
-    protected static ?string $model = Category::class;
+    protected static ?string $model = PostCategory::class;
 
     protected static ?string $slug = 'blog/categories';
 

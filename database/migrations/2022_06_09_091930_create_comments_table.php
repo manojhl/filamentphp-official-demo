@@ -9,12 +9,12 @@ return new class extends Migration
 {
     public function up()
     {
-        Schema::dropIfExists('shop_reviews');
+        Schema::dropIfExists('reviews');
 
         Schema::create('comments', function (Blueprint $table): void {
             $table->id();
 
-            $table->foreignIdFor(Customer::class)->nullable()->constrained('shop_customers')->cascadeOnDelete();
+            $table->foreignIdFor(Customer::class)->nullable()->constrained('customers')->cascadeOnDelete();
             $table->morphs('commentable');
             $table->text('title')->nullable();
             $table->text('content')->nullable();
