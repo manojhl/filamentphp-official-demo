@@ -2,7 +2,7 @@
 
 namespace App\Filament\Pages;
 
-use App\Filament\Widgets\FeaturesOverviewWidget;
+use App\Filament\Widgets\FeaturesOverview;
 use Filament\Pages\Dashboard as BaseDashboard;
 use Filament\Widgets\AccountWidget;
 use Filament\Widgets\FilamentInfoWidget;
@@ -20,7 +20,7 @@ class Dashboard extends BaseDashboard
         return [
             AccountWidget::class,
             FilamentInfoWidget::class,
-            FeaturesOverviewWidget::class,
+            FeaturesOverview::class,
         ];
     }
 }

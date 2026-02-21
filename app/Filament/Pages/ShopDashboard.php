@@ -2,14 +2,16 @@
 
 namespace App\Filament\Pages;
 
-use App\Filament\Widgets\CustomersChart;
-use App\Filament\Widgets\LatestOrders;
-use App\Filament\Widgets\OrderDistributionByStatusChart;
-use App\Filament\Widgets\OrdersChart;
-use App\Filament\Widgets\PriceQuantityChart;
-use App\Filament\Widgets\RevenueShareByChannelChart;
-use App\Filament\Widgets\SalesByCategoryChart;
-use App\Filament\Widgets\StatsOverviewWidget;
+use App\Enums\OrderStatus;
+use App\Filament\Widgets\CustomerGrowthChart;
+use App\Filament\Widgets\CustomerSegmentsChart;
+use App\Filament\Widgets\FlaggedOrders;
+use App\Filament\Widgets\OrdersYearOverYearChart;
+use App\Filament\Widgets\OrderValueDistributionChart;
+use App\Filament\Widgets\ProductMarginAnalysisChart;
+use App\Filament\Widgets\ShopKpisStats;
+use App\Filament\Widgets\TopProductsByRevenueChart;
+use App\Models\Shop\ProductCategory;
 use BackedEnum;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
@@ -37,15 +39,22 @@ class ShopDashboard extends BaseDashboard
             ->components([
                 Section::make()
                     ->schema([
-                        Select::make('businessCustomersOnly')
-                            ->boolean(),
                         DatePicker::make('startDate')
                             ->maxDate(fn (Get $get) => $get('endDate') ?: now()),
                         DatePicker::make('endDate')
                             ->minDate(fn (Get $get) => $get('startDate') ?: now())
                             ->maxDate(now()),
+                        Select::make('orderStatuses')
+                            ->label('Order status')
+                            ->options(OrderStatus::class)
+                            ->multiple()
+                            ->searchable(),
+                        Select::make('productCategory')
+                            ->label('Product category')
+                            ->options(fn (): array => ProductCategory::pluck('name', 'id')->all())
+                            ->searchable(),
                     ])
-                    ->columns(3)
+                    ->columns(4)
                     ->columnSpanFull(),
             ]);
     }
@@ -53,14 +62,14 @@ class ShopDashboard extends BaseDashboard
     public function getWidgets(): array
     {
         return [
-            StatsOverviewWidget::class,
-            OrdersChart::class,
-            CustomersChart::class,
-            LatestOrders::class,
-            SalesByCategoryChart::class,
-            RevenueShareByChannelChart::class,
-            OrderDistributionByStatusChart::class,
-            PriceQuantityChart::class,
+            ShopKpisStats::class,
+            OrdersYearOverYearChart::class,
+            CustomerGrowthChart::class,
+            FlaggedOrders::class,
+            TopProductsByRevenueChart::class,
+            CustomerSegmentsChart::class,
+            OrderValueDistributionChart::class,
+            ProductMarginAnalysisChart::class,
         ];
     }
 }

@@ -24,9 +24,9 @@ use App\Models\Shop\Product;
 use Filament\Widgets\Widget;
 use Illuminate\Database\Eloquent\Model;
 
-class FeaturesOverviewWidget extends Widget
+class FeaturesOverview extends Widget
 {
-    protected string $view = 'filament.widgets.features-overview-widget';
+    protected string $view = 'filament.widgets.features-overview';
 
     protected int | string | array $columnSpan = 'full';
 

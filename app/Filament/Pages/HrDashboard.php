@@ -2,11 +2,11 @@
 
 namespace App\Filament\Pages;
 
-use App\Filament\Widgets\BudgetVsSpentChart;
-use App\Filament\Widgets\ExpensesByCategoryChart;
-use App\Filament\Widgets\HeadcountStats;
-use App\Filament\Widgets\LeaveOverviewChart;
-use App\Filament\Widgets\TimesheetTrendsChart;
+use App\Filament\Widgets\BudgetBurnRateChart;
+use App\Filament\Widgets\DepartmentLeaveLoadChart;
+use App\Filament\Widgets\ProjectHealthChart;
+use App\Filament\Widgets\UtilizationRateChart;
+use App\Filament\Widgets\WorkforceInsightsStats;
 use BackedEnum;
 use Filament\Pages\Dashboard as BaseDashboard;
 use Filament\Support\Icons\Heroicon;
@@ -24,11 +24,11 @@ class HrDashboard extends BaseDashboard
     public function getWidgets(): array
     {
         return [
-            HeadcountStats::class,
-            LeaveOverviewChart::class,
-            BudgetVsSpentChart::class,
-            TimesheetTrendsChart::class,
-            ExpensesByCategoryChart::class,
+            WorkforceInsightsStats::class,
+            DepartmentLeaveLoadChart::class,
+            ProjectHealthChart::class,
+            UtilizationRateChart::class,
+            BudgetBurnRateChart::class,
         ];
     }
 }
