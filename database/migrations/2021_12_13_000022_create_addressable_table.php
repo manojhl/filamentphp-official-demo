@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('state')->nullable();
             $table->string('zip')->nullable();
 
-            $driver = $table->getConnection()->getDriverName();
+            $driver = Schema::getConnection()->getDriverName();
 
             if ($driver === 'pgsql') {
                 $table->string('full_address')->storedAs("street || ', ' || zip || ' ' || city");
